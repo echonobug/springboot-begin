@@ -1,0 +1,23 @@
+body{
+    background-color: #b8c2c7ad;
+}
+.content{
+    border-radius: 3px;
+    width: auto;
+    margin: 40px;
+    padding: 20px;
+    background-color: white;
+}
+.btn-submit{
+    float:right;
+}
+.div-line{
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: black;
+}
+.toast{
+    position: absolute;
+    top: 48%;
+    left: 48%;
+}
