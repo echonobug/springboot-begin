@@ -14,3 +14,10 @@ body{
     border-right-style: solid;
     border-right-color: #e0e4e8;
 }
+.pic-head{
+    width: 64px;
+    height: 64px;
+}
+.text-about{
+    color: gray;
+}

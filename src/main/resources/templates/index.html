@@ -18,8 +18,18 @@
                 <img src="svg/list-ul.svg" alt="" width="32" height="32">
                 发现
             </h4>
-            <div class="dropdown-divider"></div>
+            <div class="media border-top p-2" th:each="question : ${questions}">
+                <img th:src="${question.user.avatarUrl}" class="mr-3 pic-head rounded" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0" th:text="${question.question.title}"></h5>
+                    <span class="text-about">
+                        • <span th:text="${question.question.commentCount}"></span> 个评论
+                        • <span th:text="${question.question.viewCount}"></span> 次浏览
+                        • <span th:text="${#dates.format(question.question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </span>
+                </div>
 
+            </div>
 
         </div>
         <div class="col-lg-3 d-none d-lg-block">
@@ -27,7 +37,7 @@
                 <div class="col-lg-1 div-line">
                 </div>
                 <div class="col-lg-11 pl-3">
-                    <h5>问题发起指南</h5>
+                    <h5>热门话题</h5>
                     ●问题标题:请用精简的语言描述您发布的问题，不超过25字<br>
                     ●问题补充:详细补充您的问题内容，并确保问题描述清晰直观，并提供些相关的资料<br>
                     ●选择标签:选择一个或者多个合适的标签，多个标签用分号隔开， 每个标签不超过10个字<br>
