@@ -1,9 +1,10 @@
 package com.jw.springbootbegin.service;
 
+import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
 
-import java.util.List;
-
 public interface QuestionService {
-    List<QuestionAndUserDTO> getAll();
+    PageInfo<QuestionAndUserDTO> getAll(Integer page, Integer pageSize);
+
+    PageInfo<QuestionAndUserDTO> findAll(String keyword, Integer page, Integer pageSize);
 }

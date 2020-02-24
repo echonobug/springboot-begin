@@ -1,0 +1,28 @@
+body{
+    background-color: #b8c2c7ad;
+}
+.content{
+    border-radius: 3px;
+    width: auto;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+}
+
+.div-line{
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #e0e4e8;
+}
+.img-publish{
+    width: 18px;
+    height: 19px;
+    padding-bottom: 3px;
+}
+.pic-head{
+    width: 64px;
+    height: 64px;
+}
+.text-about{
+    color: gray;
+}
