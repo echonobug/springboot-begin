@@ -22,4 +22,7 @@ public interface QuestionMapper {
 
     @Select("select * from question where title like '%${keyword}%'")
     List<Question> findAll(@Param("keyword") String keyword);
+
+    @Select("select * from question where creator_id=#{id}")
+    List<Question> findByCreatorId(Integer id);
 }

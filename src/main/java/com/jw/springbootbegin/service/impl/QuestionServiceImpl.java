@@ -25,16 +25,21 @@ public class QuestionServiceImpl implements QuestionService {
     public PageInfo<QuestionAndUserDTO> getAll(Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         List<Question> questions = questionMapper.queryAll();
-        PageInfo<QuestionAndUserDTO> pageInfo = getQuestionAndUserDTOPageInfo(questions);
-        return pageInfo;
+        return getQuestionAndUserDTOPageInfo(questions);
     }
 
     @Override
     public PageInfo<QuestionAndUserDTO> findAll(String keyword, Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         List<Question> questions = questionMapper.findAll(keyword);
-        PageInfo<QuestionAndUserDTO> pageInfo = getQuestionAndUserDTOPageInfo(questions);
-        return pageInfo;
+        return getQuestionAndUserDTOPageInfo(questions);
+    }
+
+    @Override
+    public PageInfo<QuestionAndUserDTO> findByCreatorId(Integer id, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<Question> questions = questionMapper.findByCreatorId(id);
+        return getQuestionAndUserDTOPageInfo(questions);
     }
 
     @NotNull

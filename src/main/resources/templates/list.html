@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Question List</title>
+</head>
+<body>
+<div th:fragment="list">
+    <!--/*@thymesVar id="pageInfo" type="com.github.pagehelper.PageInfo"*/-->
+    <div class="media border-top p-2" th:each="item : ${pageInfo.list}">
+    <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.QuestionAndUserDTO"*/-->
+        <img th:src="${item.user.avatarUrl}" class="mr-3 pic-head rounded" alt="" src="">
+        <div class="media-body">
+            <h5 class="mt-0" th:text="${item.question.title}"></h5>
+            <span class="text-about">
+                        • <span th:text="${item.question.commentCount}"></span> 个评论
+                        • <span th:text="${item.question.viewCount}"></span> 次浏览
+                        • <span th:text="${#dates.format(item.question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </span>
+        </div>
+    </div>
+    <nav>
+        <ul class="pagination justify-content-end">
+            <!--/*@thymesVar id="pageAction" type="java.lang.String"*/-->
+            <li class="page-item" th:classappend="${pageInfo.isFirstPage eq true}?'d-none'">
+                <a class="page-link" th:href="${pageAction}+1">首页</a>
+            </li>
+            <li class="page-item" th:classappend="${pageInfo.hasPreviousPage eq false}?'d-none'">
+                <a class="page-link" th:href="${pageAction}+${pageInfo.prePage}">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+            <li class="page-item" th:each="currPage : ${pageInfo.navigatepageNums}" th:classappend="${pageInfo.pageNum eq currPage}?'active'">
+                <a class="page-link" th:href="${pageAction}+${currPage}" th:text="${currPage}"></a>
+            </li>
+            <li class="page-item" th:classappend="${pageInfo.hasNextPage eq false}?'d-none'">
+                <a class="page-link" th:href="${pageAction}+${pageInfo.nextPage}">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${pageInfo.isLastPage eq true}?'d-none'">
+                <a class="page-link" th:href="${pageAction}+${pageInfo.pages}">尾页</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

@@ -21,24 +21,24 @@ public class IndexController {
                         @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
 
         PageInfo<QuestionAndUserDTO> pageInfo = questionService.getAll(page, pageSize);
-        model.addAttribute("indexPageInfo", pageInfo);
-        model.addAttribute("indexPageAction","/?page=");
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("pageAction", "/?page=");
         return "index";
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam(name="keyword",defaultValue = "") String keyword,
+    public String search(@RequestParam(name = "keyword", defaultValue = "") String keyword,
                          @RequestParam(name = "page", defaultValue = "1") Integer page,
                          @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                          Model model, HttpServletRequest request) {
-        if(!keyword.equals("")){
-            request.getSession().setAttribute("indexSearchKeyword",keyword);
-        }else{
-            keyword = (String)request.getSession().getAttribute("indexSearchKeyword");
+        if (!keyword.equals("")) {
+            request.getSession().setAttribute("indexSearchKeyword", keyword);
+        } else {
+            keyword = (String) request.getSession().getAttribute("indexSearchKeyword");
         }
-        PageInfo<QuestionAndUserDTO> pageInfo = questionService.findAll(keyword,page, pageSize);
-        model.addAttribute("indexPageInfo", pageInfo);
-        model.addAttribute("indexPageAction","/search?page=");
+        PageInfo<QuestionAndUserDTO> pageInfo = questionService.findAll(keyword, page, pageSize);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("pageAction", "/search?page=");
         return "index";
     }
 
