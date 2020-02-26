@@ -42,15 +42,30 @@ public class QuestionServiceImpl implements QuestionService {
         return getQuestionAndUserDTOPageInfo(questions);
     }
 
+    @Override
+    public QuestionAndUserDTO findById(Integer id) {
+        Question question = questionMapper.findById(id);
+        if (question == null) {
+            return null;
+        }
+        return getQuestionAndUserDTO(question);
+    }
+
+    @NotNull
+    private QuestionAndUserDTO getQuestionAndUserDTO(Question question) {
+        User user = userMapper.findById(question.getCreatorId());
+        QuestionAndUserDTO questionAndUserDTO = new QuestionAndUserDTO();
+        questionAndUserDTO.setUser(user);
+        questionAndUserDTO.setQuestion(question);
+        return questionAndUserDTO;
+    }
+
     @NotNull
     private PageInfo<QuestionAndUserDTO> getQuestionAndUserDTOPageInfo(List<Question> questions) {
         List<QuestionAndUserDTO> list = new ArrayList<>();
         PageInfo<Question> questionPageInfo = new PageInfo<>(questions, 5);
         for (Question question : questionPageInfo.getList()) {
-            User user = userMapper.findById(question.getCreatorId());
-            QuestionAndUserDTO questionAndUserDTO = new QuestionAndUserDTO();
-            questionAndUserDTO.setUser(user);
-            questionAndUserDTO.setQuestion(question);
+            QuestionAndUserDTO questionAndUserDTO = getQuestionAndUserDTO(question);
             list.add(questionAndUserDTO);
         }
         PageInfo<QuestionAndUserDTO> pageInfo = new PageInfo<>();

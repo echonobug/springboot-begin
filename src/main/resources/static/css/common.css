@@ -1,6 +1,9 @@
 body{
     background-color: #b8c2c7ad;
 }
+hr{
+    color: #dee2e6;
+}
 .content{
     border-radius: 3px;
     width: auto;
@@ -12,7 +15,7 @@ body{
 .div-line{
     border-right-width: 1px;
     border-right-style: solid;
-    border-right-color: #e0e4e8;
+    border-right-color: #dee2e6;
 }
 .img-publish{
     width: 18px;
@@ -25,4 +28,8 @@ body{
 }
 .text-about{
     color: gray;
+}
+.icon-sm{
+    width: 18px;
+    height: 18px;
 }

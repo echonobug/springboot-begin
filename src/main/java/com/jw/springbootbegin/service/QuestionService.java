@@ -9,4 +9,6 @@ public interface QuestionService {
     PageInfo<QuestionAndUserDTO> findAll(String keyword, Integer page, Integer pageSize);
 
     PageInfo<QuestionAndUserDTO> findByCreatorId(Integer id, Integer page, Integer pageSize);
+
+    QuestionAndUserDTO findById(Integer id);
 }

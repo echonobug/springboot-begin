@@ -4,6 +4,7 @@ import com.jw.springbootbegin.dto.AccessTokenDTO;
 import com.jw.springbootbegin.dto.GithubUser;
 import com.jw.springbootbegin.entity.User;
 import com.jw.springbootbegin.mapper.UserMapper;
+import com.jw.springbootbegin.service.UserService;
 import com.jw.springbootbegin.utils3rd.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Controller
 public class AuthorizeController {
     private GithubProvider githubProvider;
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Value("${github.client.id}")
     private String clientId;
@@ -31,7 +32,6 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request,
                            HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
@@ -42,18 +42,21 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
         if (githubUser != null) {
-            User user = new User();
-            user.setName(githubUser.getName());
-            user.setAccountId(String.valueOf(githubUser.getId()));
-            String token = UUID.randomUUID().toString();
-            user.setToken(token);
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
-            response.addCookie(new Cookie("token",token));
-            request.getSession().setAttribute("user", githubUser);
+            String token = userService.createOrUpdate(githubUser);
+            response.addCookie(new Cookie("token", token));
         }
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        if(request.getSession().getAttribute("user") != null){
+            request.getSession().removeAttribute("user");
+        }
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return "redirect:/";
     }
 
@@ -63,7 +66,7 @@ public class AuthorizeController {
     }
 
     @Autowired
-    public void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

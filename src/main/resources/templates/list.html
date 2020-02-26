@@ -8,15 +8,17 @@
 <div th:fragment="list">
     <!--/*@thymesVar id="pageInfo" type="com.github.pagehelper.PageInfo"*/-->
     <div class="media border-top p-2" th:each="item : ${pageInfo.list}">
-    <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.QuestionAndUserDTO"*/-->
+        <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.QuestionAndUserDTO"*/-->
         <img th:src="${item.user.avatarUrl}" class="mr-3 pic-head rounded" alt="" src="">
         <div class="media-body">
-            <h5 class="mt-0" th:text="${item.question.title}"></h5>
+            <a th:href="'/question/'+${item.question.id}" class="text-decoration-none">
+                <h5 class="mt-0" th:text="${item.question.title}"></h5>
+            </a>
             <span class="text-about">
-                        • <span th:text="${item.question.commentCount}"></span> 个评论
-                        • <span th:text="${item.question.viewCount}"></span> 次浏览
-                        • <span th:text="${#dates.format(item.question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
-                    </span>
+                • <span th:text="${item.question.commentCount}"></span> 个评论
+                • <span th:text="${item.question.viewCount}"></span> 次浏览
+                • <span th:text="${#dates.format(item.question.gmtCreate, 'yyyy-MM-dd')}"></span>
+            </span>
         </div>
     </div>
     <nav>
@@ -30,7 +32,8 @@
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
-            <li class="page-item" th:each="currPage : ${pageInfo.navigatepageNums}" th:classappend="${pageInfo.pageNum eq currPage}?'active'">
+            <li class="page-item" th:each="currPage : ${pageInfo.navigatepageNums}"
+                th:classappend="${pageInfo.pageNum eq currPage}?'active'">
                 <a class="page-link" th:href="${pageAction}+${currPage}" th:text="${currPage}"></a>
             </li>
             <li class="page-item" th:classappend="${pageInfo.hasNextPage eq false}?'d-none'">
