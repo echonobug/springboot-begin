@@ -1,5 +1,5 @@
 ## HELLO
 hello
 
-##mybatis generator
+## mybatis generator
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate

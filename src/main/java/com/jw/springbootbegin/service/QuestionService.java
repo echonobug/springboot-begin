@@ -8,9 +8,11 @@ public interface QuestionService {
 
     PageInfo<QuestionAndUserDTO> findAll(String keyword, Integer page, Integer pageSize);
 
-    PageInfo<QuestionAndUserDTO> findByCreatorId(Integer id, Integer page, Integer pageSize);
+    PageInfo<QuestionAndUserDTO> findByCreatorId(Long id, Integer page, Integer pageSize);
 
-    QuestionAndUserDTO findById(Integer id);
+    QuestionAndUserDTO findById(Long id);
 
-    void createOrUpdate(Integer id, String title, String desc, String tag, Integer userId);
+    void createOrUpdate(Long id, String title, String desc, String tag, Long userId);
+
+    void incView(Long id);
 }

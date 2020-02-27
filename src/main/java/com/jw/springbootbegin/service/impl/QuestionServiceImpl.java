@@ -2,7 +2,10 @@ package com.jw.springbootbegin.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jw.springbootbegin.exception.CustomException;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
+import com.jw.springbootbegin.exception.ExceptionEnum;
+import com.jw.springbootbegin.mapper.MyQuestionMapper;
 import com.jw.springbootbegin.mapper.QuestionMapper;
 import com.jw.springbootbegin.mapper.UserMapper;
 import com.jw.springbootbegin.model.Question;
@@ -20,6 +23,7 @@ import java.util.List;
 @Service
 public class QuestionServiceImpl implements QuestionService {
     private QuestionMapper questionMapper;
+    private MyQuestionMapper myQuestionMapper;
     private UserMapper userMapper;
 
     @Override
@@ -41,7 +45,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public PageInfo<QuestionAndUserDTO> findByCreatorId(Integer id, Integer page, Integer pageSize) {
+    public PageInfo<QuestionAndUserDTO> findByCreatorId(Long id, Integer page, Integer pageSize) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorIdEqualTo(id);
         PageHelper.startPage(page, pageSize);
@@ -50,16 +54,16 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionAndUserDTO findById(Integer id) {
+    public QuestionAndUserDTO findById(Long id) throws CustomException {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
-            return null;
+            throw new CustomException(ExceptionEnum.QUESTION_NOT_FOUND);
         }
         return getQuestionAndUserDTO(question);
     }
 
     @Override
-    public void createOrUpdate(Integer id, String title, String desc, String tag, Integer userId) {
+    public void createOrUpdate(Long id, String title, String desc, String tag, Long userId) {
         Question question;
         if (id != null) {
             question = questionMapper.selectByPrimaryKey(id);
@@ -71,8 +75,13 @@ public class QuestionServiceImpl implements QuestionService {
             question.setCreatorId(userId);
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.insert(question);
+            questionMapper.insertSelective(question);
         }
+    }
+
+    @Override
+    public void incView(Long id) {
+        myQuestionMapper.incView(id);
     }
 
     private void update(String title, String desc, String tag, Question question) {
@@ -114,5 +123,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setMyQuestionMapper(MyQuestionMapper myQuestionMapper) {
+        this.myQuestionMapper = myQuestionMapper;
     }
 }
