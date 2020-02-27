@@ -1,12 +1,14 @@
 package com.jw.springbootbegin.controller;
 
-import com.jw.springbootbegin.entity.Question;
-import com.jw.springbootbegin.entity.User;
 import com.jw.springbootbegin.mapper.QuestionMapper;
+import com.jw.springbootbegin.model.Question;
+import com.jw.springbootbegin.model.User;
+import com.jw.springbootbegin.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,39 +17,46 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
     private QuestionMapper questionMapper;
+    private QuestionService questionService;
 
-    @GetMapping("/publish")
-    public String publish(){
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id, Model model) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        model.addAttribute("id", id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("desc", question.getDescription());
+        model.addAttribute("tag", question.getTag());
         return "publish";
     }
+
+    @GetMapping("/publish")
+    public String publish() {
+        return "publish";
+    }
+
     @PostMapping("/publish")
-    public String doPublish(
-            @RequestParam("title") String title,
-            @RequestParam("desc") String desc,
-            @RequestParam("tag") String tag,
-            HttpServletRequest request,
-            Model model
-    ){
-        Question question = new Question();
-        Object userObject = request.getSession().getAttribute("user");
-        if(userObject==null){
-            model.addAttribute("error","用户未登录！");
+    public String doPublish(@RequestParam("id") Integer id,
+                            @RequestParam("title") String title,
+                            @RequestParam("desc") String desc,
+                            @RequestParam("tag") String tag,
+                            HttpServletRequest request,
+                            Model model) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            model.addAttribute("error", "用户未登录！");
             return "publish";
-        }else{
-            User user = (User) userObject;
-            question.setCreatorId(user.getId());
         }
-        question.setTitle(title);
-        question.setDescription(desc);
-        question.setTag(tag);
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        questionMapper.insert(question);
+        questionService.createOrUpdate(id,title,desc,tag,user.getId());
         return "redirect:/";
     }
 
     @Autowired
     public void setQuestionMapper(QuestionMapper questionMapper) {
         this.questionMapper = questionMapper;
+    }
+
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
     }
 }

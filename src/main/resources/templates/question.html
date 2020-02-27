@@ -17,7 +17,7 @@
             <span class="text-about">
                 作者:<span th:text="${questionAndUser.user.name}"></span>
                 &nbsp;&nbsp;|&nbsp;&nbsp;阅读数:<span th:text="${questionAndUser.question.viewCount}"></span>
-                &nbsp;&nbsp;|&nbsp;&nbsp;发布时间:<span th:text="${#dates.format(questionAndUser.question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                &nbsp;&nbsp;|&nbsp;&nbsp;发布时间:<span th:text="${#dates.format(questionAndUser.question.gmtCreate, 'yyyy-MM-dd')}"></span>
             </span>
             <hr>
             <div th:text="${questionAndUser.question.description}"></div>
@@ -29,7 +29,7 @@
                 </li>
                 <li class="list-inline-item" th:if="${session.user ne null && session.user.id eq questionAndUser.user.id}">
                     <img src="/svg/pencil.svg" class="icon-sm" alt="">
-                    <a href="#">编辑</a>
+                    <a th:href="'/publish/'+${questionAndUser.question.id}">编辑</a>
                 </li>
 
             </ul>

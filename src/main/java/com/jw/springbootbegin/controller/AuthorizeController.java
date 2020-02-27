@@ -2,8 +2,6 @@ package com.jw.springbootbegin.controller;
 
 import com.jw.springbootbegin.dto.AccessTokenDTO;
 import com.jw.springbootbegin.dto.GithubUser;
-import com.jw.springbootbegin.entity.User;
-import com.jw.springbootbegin.mapper.UserMapper;
 import com.jw.springbootbegin.service.UserService;
 import com.jw.springbootbegin.utils3rd.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 @Controller
 public class AuthorizeController {

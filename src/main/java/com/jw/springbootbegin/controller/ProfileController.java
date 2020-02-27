@@ -2,8 +2,7 @@ package com.jw.springbootbegin.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
-import com.jw.springbootbegin.entity.Question;
-import com.jw.springbootbegin.entity.User;
+import com.jw.springbootbegin.model.User;
 import com.jw.springbootbegin.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

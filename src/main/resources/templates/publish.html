@@ -15,22 +15,23 @@
     <div class="row">
         <div class="col-lg-8 col-md-12 col-sm-12 col-12">
             <h3>
-                <img src="svg/cursor.svg" alt="" width="32" height="32">
+                <img src="/svg/cursor.svg" alt="" width="32" height="32">
                 发起
             </h3>
             <div class="dropdown-divider"></div>
             <form action="/publish" method="post">
+                <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题：</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..." required>
+                    <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题..." required>
                 </div>
                 <div class="form-group">
                     <label for="desc">问题补充：</label>
-                    <textarea class="form-control" id="desc" name="desc" rows="5"></textarea>
+                    <textarea class="form-control" id="desc" th:text="${desc}" name="desc" rows="5"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="添加标签,以分号(;)分隔多个标签">
+                    <input type="text" class="form-control" id="tag" th:value="${tag}" name="tag" placeholder="添加标签,以分号(;)分隔多个标签">
                 </div>
                 <button type="submit" class="btn btn-primary btn-submit">发布</button>
             </form>

@@ -11,4 +11,6 @@ public interface QuestionService {
     PageInfo<QuestionAndUserDTO> findByCreatorId(Integer id, Integer page, Integer pageSize);
 
     QuestionAndUserDTO findById(Integer id);
+
+    void createOrUpdate(Integer id, String title, String desc, String tag, Integer userId);
 }

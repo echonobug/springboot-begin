@@ -1,7 +1,7 @@
 package com.jw.springbootbegin.dto;
 
-import com.jw.springbootbegin.entity.Question;
-import com.jw.springbootbegin.entity.User;
+import com.jw.springbootbegin.model.Question;
+import com.jw.springbootbegin.model.User;
 import lombok.Data;
 
 @Data
