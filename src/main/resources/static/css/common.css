@@ -26,6 +26,10 @@ hr{
     width: 64px;
     height: 64px;
 }
+.pic-head-sm{
+    width: 40px;
+    height: 40px;
+}
 .text-about{
     color: gray;
 }
@@ -33,8 +37,11 @@ hr{
     width: 18px;
     height: 18px;
 }
-.btn-submit{
+.btn-right{
     float:right;
+}
+.btn-div{
+    height: 50px;
 }
 .toast{
     position: absolute;
