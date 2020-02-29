@@ -8,4 +8,8 @@ public interface CommentService {
     void insert(CommentDTO commentDTO, Long id);
 
     PageInfo<CommentAndUserDTO> queryByTypeAndParentId(int type, Long id, Integer page, Integer pageSize);
+
+    Long incLike(Long id);
+
+    String getSecondaryCommentHtml(Long id);
 }

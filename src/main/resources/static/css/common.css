@@ -1,10 +1,16 @@
-body{
+body {
     background-color: #b8c2c7ad;
 }
-hr{
+
+hr {
     color: #dee2e6;
 }
-.content{
+
+a:hover {
+    text-decoration-line: none;
+}
+
+.content {
     border-radius: 3px;
     width: auto;
     margin: 20px;
@@ -12,39 +18,60 @@ hr{
     background-color: white;
 }
 
-.div-line{
+.div-line {
     border-right-width: 1px;
     border-right-style: solid;
     border-right-color: #dee2e6;
 }
-.img-publish{
+
+.img-publish {
     width: 18px;
     height: 19px;
     padding-bottom: 3px;
 }
-.pic-head{
+
+.pic-head {
     width: 64px;
     height: 64px;
 }
-.pic-head-sm{
+
+.pic-head-sm {
     width: 40px;
     height: 40px;
 }
-.text-about{
+
+.text-about {
     color: gray;
 }
-.icon-sm{
+
+.icon-sm {
     width: 18px;
     height: 18px;
 }
-.btn-right{
-    float:right;
+
+.btn-icon {
+    padding: 0;
+    height: 30px;
+    width: 72px;
 }
-.btn-div{
+
+.btn-right {
+    float: right;
+}
+
+.btn-div {
     height: 50px;
 }
-.toast{
+
+.toast {
     position: absolute;
     top: 48%;
     left: 48%;
+}
+
+.div-secondary-comment {
+    background-color: #f8f9fa;
+}
+.div-btn-reply{
+    height: 40px;
 }

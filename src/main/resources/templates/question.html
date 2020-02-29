@@ -52,12 +52,30 @@
             </div>
             <div>
                 <h5><span th:text="${questionAndUser.question.commentCount}"></span>个回复</h5>
+                <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.CommentAndUserDTO"*/-->
                 <div class="media border-top p-2" th:each="item : ${pageInfo.list}">
-                    <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.CommentAndUserDTO"*/-->
-                    <img th:src="${item.user.avatarUrl}" class="mr-3 pic-head rounded" alt="" src="">
+                    <img th:src="${item.user.avatarUrl}" class="mr-3 mt-1 pic-head rounded" alt="" src="">
                     <div class="media-body">
                         <div class="text-about" th:text="${item.user.name}"></div>
                         <div th:text="${item.comment.content}"></div>
+                        <div><ul class="list-inline mt-1">
+                                <li class="list-inline-item mr-0">
+                                    <button type="button" class="btn btn-light btn-icon" th:onclick="'like(this,'+${item.comment.id}+')'">
+                                        <img src="/svg/like.svg" class="icon-sm" alt="">
+                                        <span th:text="${item.comment.likeCount}"></span>
+                                    </button>
+                                </li>
+                                <li class="list-inline-item ml-0">
+                                    <button type="button" class="btn btn-light btn-icon" th:onclick="'getReply(this,'+${item.comment.id}+')'">
+                                            <img src="/svg/chat.svg" class="icon-sm" alt="">
+                                            <span th:text="${item.comment.replyCount}"></span>
+                                    </button>
+                                </li>
+                                <li class="list-inline-item float-right">
+                                    <span th:text="${#dates.format(item.comment.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                                </li>
+                            </ul></div>
+                        <div th:id="'comment-'+${item.comment.id}" class="div-secondary-comment rounded "></div>
                     </div>
                 </div>
                 <nav th:replace="page-nav :: page-nav"></nav>

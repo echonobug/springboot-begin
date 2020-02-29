@@ -12,5 +12,5 @@ public interface MyQuestionMapper {
 
     @Update("update question set comment_count=comment_count+1 " +
             "where id=#{id}")
-    void incComment(Long parentId);
+    void incComment(Long id);
 }
