@@ -1,7 +1,7 @@
 package com.jw.springbootbegin.controller;
 
+import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.CommentDTO;
-import com.jw.springbootbegin.mapper.CommentMapper;
 import com.jw.springbootbegin.model.Comment;
 import com.jw.springbootbegin.model.User;
 import com.jw.springbootbegin.result.Result;
@@ -9,9 +9,11 @@ import com.jw.springbootbegin.result.ResultEnum;
 import com.jw.springbootbegin.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -26,10 +28,12 @@ public class CommentController {
         return new Result<>(ResultEnum.SUCCESS);
     }
 
-    @ResponseBody
     @PostMapping("/comment/secondary")
-    public String secondaryComment(@RequestParam("id") Long id) {
-        return commentService.getSecondaryCommentHtml(id);
+    public String secondaryComment(@RequestParam("id") Long id, Model model) {
+        List<CommentAndUserDTO> secondaryCommentAndUserDAO = commentService.getSecondaryCommentAndUserDAO(id);
+        model.addAttribute("id",id);
+        model.addAttribute("list",secondaryCommentAndUserDAO);
+        return "secondary-comment :: secondary-list";
     }
 
 

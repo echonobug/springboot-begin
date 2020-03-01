@@ -17,10 +17,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -39,7 +39,11 @@ public class CommentServiceImpl implements CommentService {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
         commentMapper.insertSelective(comment);
-        myQuestionMapper.incComment(comment.getParentId());
+        if(comment.getType()==1){
+            myQuestionMapper.incComment(comment.getParentId());
+        }else{
+            myCommentMapper.incReply(comment.getParentId());
+        }
     }
 
     @Override
@@ -77,19 +81,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public String getSecondaryCommentHtml(Long id) {
+    public List<CommentAndUserDTO> getSecondaryCommentAndUserDAO(Long id) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andTypeEqualTo(2).andParentIdEqualTo(id);
         List<Comment> comments = commentMapper.selectByExample(commentExample);
-        Map<String, Object> map = new HashMap<>();
-        map.put("list", getCommentAndUserDTO(comments));
-        map.put("id",id);
-        Context context = new Context();
-        context.setVariables(map);
-        Set<String> templateSelectors = new HashSet<>();
-        templateSelectors.add("secondary-list");
-        String html = thymeleafViewResolver.getTemplateEngine().process("secondary-comment", templateSelectors, context);
-        return html;
+        return getCommentAndUserDTO(comments);
     }
 
     @Autowired

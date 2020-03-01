@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.CommentDTO;
 
+import java.util.List;
+
 public interface CommentService {
     void insert(CommentDTO commentDTO, Long id);
 
@@ -11,5 +13,5 @@ public interface CommentService {
 
     Long incLike(Long id);
 
-    String getSecondaryCommentHtml(Long id);
+    List<CommentAndUserDTO> getSecondaryCommentAndUserDAO(Long id);
 }
