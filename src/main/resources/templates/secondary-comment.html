@@ -31,8 +31,7 @@
         </div>
     </div>
     <div class="p-2">
-        <input type="hidden" th:id="'reply-type-'+${id}" value="2">
-        <input type="hidden" th:id="'reply-parentId-'+${id}" th:value="${id}">
+        <input type="hidden" th:id="'reply-pre-'+${id}" value="">
         <input type="text" class="form-control" th:id="'input-'+${id}" placeholder="评论一下...">
         <div class="div-btn-reply" th:id="'div-btn-'+${id}">
             <button type="button" class="btn btn-success mt-2 ml-1 btn-icon float-right"

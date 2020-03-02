@@ -44,26 +44,27 @@ function getReply(btn, id) {
 }
 
 function changeReply(id, userName, parentId) {
-    $("#reply-type-" + id).val("3");
-    $("#reply-parentId-" + id).val(parentId);
-    $("#input-" + id).attr("placeholder", "回复 " + userName + ":");
+    let pre = "回复 " + userName + ":";
+    $("#reply-pre-" + id).val(pre);
+    $("#input-" + id).attr("placeholder", pre);
     $("#input-" + id).focus();
 }
 
 function replyCancal(btn, id) {
-    $("#reply-type-" + id).val("2");
-    $("#reply-parentId-" + id).val(id);
+    $("#reply-pre-" + id).val("");
     $("#input-" + id).val("");
     $("#input-" + id).attr("placeholder", "评论一下...");
     btn.blur();
 }
 
 function reply(btn, id) {
-    var content = $("#input-" + id).val();
+    let content = $("#input-" + id).val();
     if (content.length == 0) {
         alert("回复内容不能为空！");
         btn.blur();
     } else {
-        postComment($("#reply-type-" + id).val(),$("#reply-parentId-" + id).val(),content);
+        content = $("#reply-pre-" + id).val()+content;
+        postComment(2,id,content);
+        replyCancal(btn,id)
     }
 }
