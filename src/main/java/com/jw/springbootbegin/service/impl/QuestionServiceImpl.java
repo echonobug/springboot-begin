@@ -30,6 +30,7 @@ public class QuestionServiceImpl implements QuestionService {
     public PageInfo<QuestionAndUserDTO> getAll(Integer page, Integer pageSize) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andIdIsNotNull();
+        questionExample.setOrderByClause("gmt_create desc");
         PageHelper.startPage(page, pageSize);
         List<Question> questions = questionMapper.selectByExample(questionExample);
         return getQuestionAndUserDTOPageInfo(questions);
@@ -82,6 +83,15 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void incView(Long id) {
         myQuestionMapper.incView(id);
+    }
+
+    @Override
+    public List<Question> findRelatedQuestion(Long id, String tag) {
+        if (tag.length() == 0) {
+            return null;
+        }
+        String tags = tag.replace(";", "|");
+        return myQuestionMapper.findRelatedQuestion(id, tags);
     }
 
     private void update(String title, String desc, String tag, Question question) {

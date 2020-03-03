@@ -2,6 +2,9 @@ package com.jw.springbootbegin.service;
 
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
+import com.jw.springbootbegin.model.Question;
+
+import java.util.List;
 
 public interface QuestionService {
     PageInfo<QuestionAndUserDTO> getAll(Integer page, Integer pageSize);
@@ -15,4 +18,6 @@ public interface QuestionService {
     void createOrUpdate(Long id, String title, String desc, String tag, Long userId);
 
     void incView(Long id);
+
+    List<Question> findRelatedQuestion(Long id, String tag);
 }

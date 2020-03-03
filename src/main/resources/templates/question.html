@@ -23,6 +23,17 @@
             </span>
             <hr>
             <div th:text="${questionAndUser.question.description}"></div>
+            <div th:if="${questionAndUser.question.tag.length() ne 0}">
+                <hr class="mb-0">
+                <ul class="list-inline">
+                    <li class="list-inline-item" th:each="tag : ${questionAndUser.question.tag.split(';')}">
+                        <a href="#" class="badge badge-info">
+                            <img src="/svg/tag.svg" class="icon-sm" alt="">
+                            <span th:text="${tag}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <hr>
             <ul class="list-inline">
                 <li class="list-inline-item"
@@ -58,23 +69,27 @@
                     <div class="media-body">
                         <div class="text-about" th:text="${item.user.name}"></div>
                         <div th:text="${item.comment.content}"></div>
-                        <div><ul class="list-inline mt-1">
+                        <div>
+                            <ul class="list-inline mt-1">
                                 <li class="list-inline-item mr-0">
-                                    <button type="button" class="btn btn-light btn-icon" th:onclick="'like(this,'+${item.comment.id}+')'">
+                                    <button type="button" class="btn btn-light btn-icon"
+                                            th:onclick="'like(this,'+${item.comment.id}+')'">
                                         <img src="/svg/like.svg" class="icon-sm" alt="">
                                         <span th:text="${item.comment.likeCount}"></span>
                                     </button>
                                 </li>
                                 <li class="list-inline-item ml-0">
-                                    <button type="button" class="btn btn-light btn-icon" th:onclick="'getReply(this,'+${item.comment.id}+')'">
-                                            <img src="/svg/chat.svg" class="icon-sm" alt="">
-                                            <span th:text="${item.comment.replyCount}"></span>
+                                    <button type="button" class="btn btn-light btn-icon"
+                                            th:onclick="'getReply(this,'+${item.comment.id}+')'">
+                                        <img src="/svg/chat.svg" class="icon-sm" alt="">
+                                        <span th:text="${item.comment.replyCount}"></span>
                                     </button>
                                 </li>
                                 <li class="list-inline-item float-right">
                                     <span th:text="${#dates.format(item.comment.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
                                 </li>
-                            </ul></div>
+                            </ul>
+                        </div>
                         <div th:id="'comment-'+${item.comment.id}" class="div-secondary-comment rounded "></div>
                     </div>
                 </div>
@@ -97,6 +112,11 @@
                     <hr>
                     <h5>相关问题</h5>
                     <hr class="d-block d-lg-none">
+                    <ul class="a-list">
+                        <li th:each="item : ${relatedQuestions}">
+                            <a th:href="'/question/'+${item.id}" th:text="${item.title}"></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

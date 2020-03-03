@@ -3,6 +3,7 @@ package com.jw.springbootbegin.controller;
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
+import com.jw.springbootbegin.model.Question;
 import com.jw.springbootbegin.service.CommentService;
 import com.jw.springbootbegin.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -22,11 +25,13 @@ public class QuestionController {
                            @RequestParam(name = "page", defaultValue = "1") Integer page,
                            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         QuestionAndUserDTO questionAndUserDTO = questionService.findById(id);
+        List<Question> relatedQuestions = questionService.findRelatedQuestion(id, questionAndUserDTO.getQuestion().getTag());
         questionService.incView(questionAndUserDTO.getQuestion().getId());
-        PageInfo<CommentAndUserDTO> pageInfo = commentService.queryByTypeAndParentId(1, id,page,pageSize);
+        PageInfo<CommentAndUserDTO> pageInfo = commentService.queryByTypeAndParentId(1, id, page, pageSize);
         model.addAttribute("questionAndUser", questionAndUserDTO);
+        model.addAttribute("relatedQuestions", relatedQuestions);
         model.addAttribute("pageInfo", pageInfo);
-        model.addAttribute("pageAction", "/question/"+id+"?page=");
+        model.addAttribute("pageAction", "/question/" + id + "?page=");
         return "question";
     }
 

@@ -4,12 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.CommentDTO;
-import com.jw.springbootbegin.mapper.CommentMapper;
-import com.jw.springbootbegin.mapper.MyCommentMapper;
-import com.jw.springbootbegin.mapper.MyQuestionMapper;
-import com.jw.springbootbegin.mapper.UserMapper;
+import com.jw.springbootbegin.mapper.*;
 import com.jw.springbootbegin.model.Comment;
 import com.jw.springbootbegin.model.CommentExample;
+import com.jw.springbootbegin.model.Notification;
 import com.jw.springbootbegin.model.User;
 import com.jw.springbootbegin.service.CommentService;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +23,9 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private UserMapper userMapper;
     private CommentMapper commentMapper;
+    private NotificationMapper notificationMapper;
     private MyQuestionMapper myQuestionMapper;
     private MyCommentMapper myCommentMapper;
-    private ThymeleafViewResolver thymeleafViewResolver;
 
     @Override
     @Transactional
@@ -109,7 +106,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Autowired
-    public void setThymeleafViewResolver(ThymeleafViewResolver thymeleafViewResolver) {
-        this.thymeleafViewResolver = thymeleafViewResolver;
+    public void setNotificationMapper(NotificationMapper notificationMapper) {
+        this.notificationMapper = notificationMapper;
     }
 }

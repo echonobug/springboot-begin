@@ -20,7 +20,7 @@
                         <button type="button" class="btn btn-light btn-icon"
                                 th:onclick="changeReply([[${id}]],[[${item.user.name}]],[[${item.comment.id}]])">
                             <img src="/svg/chat.svg" class="icon-sm" alt="">
-                            <span th:text="${item.comment.replyCount}"></span>
+                            <span>回复</span>
                         </button>
                     </li>
                     <li class="list-inline-item float-right">

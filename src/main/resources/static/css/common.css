@@ -75,3 +75,7 @@ a:hover {
 .div-btn-reply{
     height: 40px;
 }
+.a-list{
+    padding: 5px;
+    list-style-type: none;
+}
