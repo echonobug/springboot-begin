@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.CommentDTO;
+import com.jw.springbootbegin.enums.NotificationEnum;
 import com.jw.springbootbegin.mapper.*;
 import com.jw.springbootbegin.model.Comment;
 import com.jw.springbootbegin.model.CommentExample;
@@ -36,17 +37,27 @@ public class CommentServiceImpl implements CommentService {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
         commentMapper.insertSelective(comment);
+        Notification notification = new Notification();
+        notification.setInitiator(id);
+        notification.setGmtCreate(comment.getGmtCreate());
+        Comment parentComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+        notification.setReceiver(parentComment.getCreatorId());
+        notification.setContentId(comment.getId());
         if(comment.getType()==1){
             myQuestionMapper.incComment(comment.getParentId());
+            notification.setType(NotificationEnum.QuestionReply.getType());
         }else{
             myCommentMapper.incReply(comment.getParentId());
+            notification.setType(NotificationEnum.SecondaryReply.getType());
         }
+        notificationMapper.insertSelective(notification);
     }
 
     @Override
     public PageInfo<CommentAndUserDTO> queryByTypeAndParentId(int type, Long id, Integer page, Integer pageSize) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andTypeEqualTo(type).andParentIdEqualTo(id);
+        commentExample.setOrderByClause("gmt_create desc");
         PageHelper.startPage(page, pageSize);
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         PageInfo<Comment> commentPageInfo = new PageInfo<>(comments, 5);
@@ -106,6 +117,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Autowired
+
     public void setNotificationMapper(NotificationMapper notificationMapper) {
         this.notificationMapper = notificationMapper;
     }

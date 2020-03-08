@@ -5,6 +5,7 @@ import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
 import com.jw.springbootbegin.model.Question;
 import com.jw.springbootbegin.service.CommentService;
+import com.jw.springbootbegin.service.NotificationService;
 import com.jw.springbootbegin.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,16 @@ import java.util.List;
 public class QuestionController {
     private QuestionService questionService;
     private CommentService commentService;
+    private NotificationService notificationService;
 
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Long id, Model model,
+                           @RequestParam(name = "readId", defaultValue = "-1") Long readId,
                            @RequestParam(name = "page", defaultValue = "1") Integer page,
                            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+        if (readId != -1) {
+            notificationService.read(readId);
+        }
         QuestionAndUserDTO questionAndUserDTO = questionService.findById(id);
         List<Question> relatedQuestions = questionService.findRelatedQuestion(id, questionAndUserDTO.getQuestion().getTag());
         questionService.incView(questionAndUserDTO.getQuestion().getId());
@@ -43,5 +49,10 @@ public class QuestionController {
     @Autowired
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
+    }
+
+    @Autowired
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 }

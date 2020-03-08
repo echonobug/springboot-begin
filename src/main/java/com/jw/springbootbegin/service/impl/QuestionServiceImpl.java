@@ -69,7 +69,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (id != null) {
             question = questionMapper.selectByPrimaryKey(id);
             update(title, desc, tag, question);
-            questionMapper.updateByPrimaryKey(question);
+            questionMapper.updateByPrimaryKeySelective(question);
         } else {
             question = new Question();
             update(title, desc, tag, question);

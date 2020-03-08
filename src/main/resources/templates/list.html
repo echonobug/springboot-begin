@@ -19,5 +19,27 @@
     </div>
     <nav th:replace="page-nav :: page-nav"></nav>
 </div>
+<div th:fragment="notification-list">
+    <!--/*@thymesVar id="pageInfo" type="com.github.pagehelper.PageInfo"*/-->
+    <div class="media border-top p-2" th:each="item : ${pageInfo.list}">
+        <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.NotificationDTO"*/-->
+        <div class="media-body">
+            <span>
+                <h5 class="mt-0">
+                    <span th:text="${item.userName}"></span>
+                    回复了问题
+                    <a th:href="'/question/'+${item.questionId}+'?readId='+${item.id}" class="text-decoration-none">
+                        <span th:text="${item.questionTitle}"></span>
+                    </a>
+                </h5>
+            </span>
+            <span class="text-about">
+                <span th:text="${#dates.format(item.gmt_reply, 'yyyy-MM-dd HH:mm')}"></span>
+                <span th:if="${item.status} eq 0" class="badge badge-warning">未读</span>
+            </span>
+        </div>
+    </div>
+    <nav th:replace="page-nav :: page-nav"></nav>
+</div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 package com.jw.springbootbegin.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.jw.springbootbegin.dto.QuestionAndUserDTO;
 import com.jw.springbootbegin.model.User;
+import com.jw.springbootbegin.service.NotificationService;
 import com.jw.springbootbegin.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ProfileController {
     private QuestionService questionService;
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable String action,
@@ -25,17 +26,24 @@ public class ProfileController {
                           @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         model.addAttribute("action", action);
         User user = (User) request.getSession().getAttribute("user");
-        PageInfo<QuestionAndUserDTO> pageInfo = null;
+        PageInfo<?> pageInfo = null;
         String actionName = "";
+        String listFragment = "";
         if (action.equals("myQuestion")) {
             actionName = "我的提问";
+            listFragment = "list";
             pageInfo = questionService.findByCreatorId(user.getId(), page, pageSize);
-        } else if (action.equals("")) {
-
+        } else if (action.equals("questionReply")) {
+            actionName = "问题回复";
+            listFragment = "notification-list";
+            pageInfo = notificationService.findReply(user.getId(), page, pageSize);
         } else {
             pageInfo = new PageInfo<>();
         }
+        Long unreadCount = notificationService.getUnreadReplyCount(user.getId());
+        model.addAttribute("unreadCount",unreadCount);
         model.addAttribute("actionName",actionName);
+        model.addAttribute("listFragment",listFragment);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("pageAction","/profile/"+action+"?page=");
         return "profile";
@@ -44,5 +52,10 @@ public class ProfileController {
     @Autowired
     public void setQuestionService(QuestionService questionService) {
         this.questionService = questionService;
+    }
+
+    @Autowired
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 }
