@@ -6,10 +6,7 @@ import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.CommentDTO;
 import com.jw.springbootbegin.enums.NotificationEnum;
 import com.jw.springbootbegin.mapper.*;
-import com.jw.springbootbegin.model.Comment;
-import com.jw.springbootbegin.model.CommentExample;
-import com.jw.springbootbegin.model.Notification;
-import com.jw.springbootbegin.model.User;
+import com.jw.springbootbegin.model.*;
 import com.jw.springbootbegin.service.CommentService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +21,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private UserMapper userMapper;
     private CommentMapper commentMapper;
+    private QuestionMapper questionMapper;
     private NotificationMapper notificationMapper;
     private MyQuestionMapper myQuestionMapper;
     private MyCommentMapper myCommentMapper;
@@ -40,8 +38,8 @@ public class CommentServiceImpl implements CommentService {
         Notification notification = new Notification();
         notification.setInitiator(id);
         notification.setGmtCreate(comment.getGmtCreate());
-        Comment parentComment = commentMapper.selectByPrimaryKey(comment.getParentId());
-        notification.setReceiver(parentComment.getCreatorId());
+        Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+        notification.setReceiver(question.getCreatorId());
         notification.setContentId(comment.getId());
         if(comment.getType()==1){
             myQuestionMapper.incComment(comment.getParentId());
@@ -117,8 +115,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Autowired
-
     public void setNotificationMapper(NotificationMapper notificationMapper) {
         this.notificationMapper = notificationMapper;
+    }
+    @Autowired
+    public void setQuestionMapper(QuestionMapper questionMapper) {
+        this.questionMapper = questionMapper;
     }
 }
