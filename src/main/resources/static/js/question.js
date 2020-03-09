@@ -4,7 +4,8 @@ $(function () {
         if (comment.length == 0) {
             $("#div-alert").html("评论内容不能为空！！！").addClass("p-2")
         } else {
-            postComment(1, $("#parentId").val(), comment)
+            postComment(1, $("#parentId").val(), comment, "#div-comment-list","/comment/comment")
+            $("#txt-comment").val("")
             this.blur()
         }
     });
@@ -13,7 +14,7 @@ $(function () {
     });
 })
 
-function postComment(type, parentId, comment) {
+function postComment(type, parentId, comment, divId, divContentUrl) {
     var sendData = {
         "type": type,
         "parentId": parentId,
@@ -23,7 +24,10 @@ function postComment(type, parentId, comment) {
         url: "/comment",
         type: 'post',
         contentType: 'application/json',
-        data: JSON.stringify(sendData)
+        data: JSON.stringify(sendData),
+        success: function () {
+            $(divId).load(divContentUrl, {"id": parentId});
+        }
     })
 }
 
@@ -63,8 +67,8 @@ function reply(btn, id) {
         alert("回复内容不能为空！");
         btn.blur();
     } else {
-        content = $("#reply-pre-" + id).val()+content;
-        postComment(2,id,content);
-        replyCancal(btn,id)
+        content = $("#reply-pre-" + id).val() + content;
+        postComment(2, id, content, "#comment-" + id,"/comment/secondary");
+        replyCancal(btn, id)
     }
 }

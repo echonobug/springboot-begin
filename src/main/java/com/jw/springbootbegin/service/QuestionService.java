@@ -20,4 +20,6 @@ public interface QuestionService {
     void incView(Long id);
 
     List<Question> findRelatedQuestion(Long id, String tag);
+
+    List<Question> findPopularQuestion(Integer count);
 }

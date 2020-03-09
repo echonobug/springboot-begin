@@ -15,6 +15,7 @@
     <script type="text/javascript">
         $(function () {
             var testView = editormd.markdownToHTML("markdown-view", {
+                emoji: true
                 // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
                 // htmlDecode : true,  // Enable / disable HTML tag encode.
                 // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
@@ -76,39 +77,8 @@
                     <button id="btn-comment" class="btn btn-primary btn-right mt-1 mb-2">回复</button>
                 </div>
             </div>
-            <div>
-                <h5><span th:text="${questionAndUser.question.commentCount}"></span>个回复</h5>
-                <!--/*@thymesVar id="item" type="com.jw.springbootbegin.dto.CommentAndUserDTO"*/-->
-                <div class="media border-top p-2" th:each="item : ${pageInfo.list}">
-                    <img th:src="${item.user.avatarUrl}" class="mr-3 mt-1 pic-head rounded" alt="" src="">
-                    <div class="media-body">
-                        <div class="text-about" th:text="${item.user.name}"></div>
-                        <div th:text="${item.comment.content}"></div>
-                        <div>
-                            <ul class="list-inline mt-1">
-                                <li class="list-inline-item mr-0">
-                                    <button type="button" class="btn btn-light btn-icon"
-                                            th:onclick="'like(this,'+${item.comment.id}+')'">
-                                        <img src="/svg/like.svg" class="icon-sm" alt="">
-                                        <span th:text="${item.comment.likeCount}"></span>
-                                    </button>
-                                </li>
-                                <li class="list-inline-item ml-0">
-                                    <button type="button" class="btn btn-light btn-icon"
-                                            th:onclick="'getReply(this,'+${item.comment.id}+')'">
-                                        <img src="/svg/chat.svg" class="icon-sm" alt="">
-                                        <span th:text="${item.comment.replyCount}"></span>
-                                    </button>
-                                </li>
-                                <li class="list-inline-item float-right">
-                                    <span th:text="${#dates.format(item.comment.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div th:id="'comment-'+${item.comment.id}" class="div-secondary-comment rounded "></div>
-                    </div>
-                </div>
-                <nav th:replace="page-nav :: page-nav"></nav>
+            <div id="div-comment-list">
+                <div th:replace="list :: comment-list"></div>
             </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-12 order-first order-lg-last pl-lg-3 mb-lg-auto mb-4">

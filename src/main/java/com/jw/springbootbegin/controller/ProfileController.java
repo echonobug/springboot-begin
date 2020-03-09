@@ -34,7 +34,7 @@ public class ProfileController {
             listFragment = "list";
             pageInfo = questionService.findByCreatorId(user.getId(), page, pageSize);
         } else if (action.equals("questionReply")) {
-            actionName = "问题回复";
+            actionName = "最新回复";
             listFragment = "notification-list";
             pageInfo = notificationService.findReply(user.getId(), page, pageSize);
         } else {

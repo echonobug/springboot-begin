@@ -94,6 +94,11 @@ public class QuestionServiceImpl implements QuestionService {
         return myQuestionMapper.findRelatedQuestion(id, tags);
     }
 
+    @Override
+    public List<Question> findPopularQuestion(Integer count) {
+        return myQuestionMapper.findPopularQuestion(count);
+    }
+
     private void update(String title, String desc, String tag, Question question) {
         question.setGmtModified(System.currentTimeMillis());
         question.setTitle(title);

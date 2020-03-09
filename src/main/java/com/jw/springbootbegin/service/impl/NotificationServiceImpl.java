@@ -28,8 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public PageInfo<NotificationDTO> findReply(Long id, Integer page, Integer pageSize) {
         NotificationExample notificationExample = new NotificationExample();
-        notificationExample.createCriteria()
-                .andReceiverEqualTo(id).andTypeEqualTo(NotificationEnum.QuestionReply.getType());
+        notificationExample.createCriteria().andReceiverEqualTo(id);
         notificationExample.setOrderByClause("gmt_create desc");
         PageHelper.startPage(page, pageSize);
         List<Notification> notifications = notificationMapper.selectByExample(notificationExample);
@@ -40,16 +39,23 @@ public class NotificationServiceImpl implements NotificationService {
             notificationDTO.setId(notification.getId());
             notificationDTO.setGmt_reply(notification.getGmtCreate());
             notificationDTO.setStatus(notification.getStatus());
+            notificationDTO.setType(notification.getType());
             User user = userMapper.selectByPrimaryKey(notification.getInitiator());
             notificationDTO.setUserName(user.getName());
             Comment comment = commentMapper.selectByPrimaryKey(notification.getContentId());
-            Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            Question question;
+            if (notification.getType() == NotificationEnum.QuestionReply.getType()) {
+                question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            } else {
+                Comment comment1 = commentMapper.selectByPrimaryKey(comment.getParentId());
+                question = questionMapper.selectByPrimaryKey(comment1.getParentId());
+            }
             notificationDTO.setQuestionId(question.getId());
             notificationDTO.setQuestionTitle(question.getTitle());
             notificationDTOList.add(notificationDTO);
         }
         PageInfo<NotificationDTO> pageInfo = new PageInfo<>();
-        BeanUtils.copyProperties(notificationPageInfo,pageInfo);
+        BeanUtils.copyProperties(notificationPageInfo, pageInfo);
         pageInfo.setList(notificationDTOList);
         return pageInfo;
     }
@@ -58,8 +64,7 @@ public class NotificationServiceImpl implements NotificationService {
     public long getUnreadReplyCount(Long id) {
         NotificationExample notificationExample = new NotificationExample();
         notificationExample.createCriteria()
-                .andReceiverEqualTo(id).andTypeEqualTo(NotificationEnum.QuestionReply.getType())
-                .andStatusEqualTo(NotificationStatusEnum.Unread.getStatus());
+                .andReceiverEqualTo(id).andStatusEqualTo(NotificationStatusEnum.Unread.getStatus());
         return notificationMapper.countByExample(notificationExample);
     }
 

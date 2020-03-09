@@ -26,9 +26,11 @@
                 </div>
                 <div class="col-lg-11 pl-3">
                     <h5>热门话题</h5>
-                    ●问题标题:请用精简的语言描述您发布的问题，不超过25字<br>
-                    ●问题补充:详细补充您的问题内容，并确保问题描述清晰直观，并提供些相关的资料<br>
-                    ●选择标签:选择一个或者多个合适的标签，多个标签用分号隔开， 每个标签不超过10个字<br>
+                    <ul class="a-list">
+                        <li th:each="item : ${popularQuestions}">
+                            <a th:href="'/question/'+${item.id}" th:text="${item.title}"></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

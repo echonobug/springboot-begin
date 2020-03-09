@@ -8,6 +8,7 @@ public class NotificationDTO {
     private String userName;
     private Long questionId;
     private String questionTitle;
+    private Integer type;
     private Long gmt_reply;
     private Integer status;
 }

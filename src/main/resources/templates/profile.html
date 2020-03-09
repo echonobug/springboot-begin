@@ -28,11 +28,9 @@
                 </a>
                 <a class="list-group-item list-group-item-action"
                    th:classappend="${action eq 'questionReply'}?'active'" href="/profile/questionReply">
-                    问题回复
-                    <span th:if="${unreadCount} ne 0" class="badge badge-info badge-pill float-right" th:text="${unreadCount}"></span>
+                    最新回复
+                    <span class="badge badge-info badge-pill float-right" th:text="${unreadCount}"></span>
                 </a>
-                <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
             </div>
         </div>
     </div>

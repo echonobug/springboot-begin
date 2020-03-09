@@ -21,4 +21,7 @@ public interface MyQuestionMapper {
 
     @Select("select * from question where id != #{id} and tag REGEXP #{tag}")
     List<Question> findRelatedQuestion(Long id, @Param("tag") String tag);
+
+    @Select("select * from question order by view_count desc limit #{count}")
+    List<Question> findPopularQuestion(Integer count);
 }

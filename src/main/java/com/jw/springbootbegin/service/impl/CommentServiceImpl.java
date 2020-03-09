@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.CommentAndUserDTO;
 import com.jw.springbootbegin.dto.CommentDTO;
+import com.jw.springbootbegin.enums.CommentTypeEnum;
 import com.jw.springbootbegin.enums.NotificationEnum;
 import com.jw.springbootbegin.mapper.*;
 import com.jw.springbootbegin.model.*;
@@ -38,14 +39,16 @@ public class CommentServiceImpl implements CommentService {
         Notification notification = new Notification();
         notification.setInitiator(id);
         notification.setGmtCreate(comment.getGmtCreate());
-        Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
-        notification.setReceiver(question.getCreatorId());
         notification.setContentId(comment.getId());
-        if(comment.getType()==1){
+        if (comment.getType() == CommentTypeEnum.Question.getType()) {
             myQuestionMapper.incComment(comment.getParentId());
+            Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            notification.setReceiver(question.getCreatorId());
             notification.setType(NotificationEnum.QuestionReply.getType());
-        }else{
+        } else {
             myCommentMapper.incReply(comment.getParentId());
+            Comment secondaryComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+            notification.setReceiver(secondaryComment.getCreatorId());
             notification.setType(NotificationEnum.SecondaryReply.getType());
         }
         notificationMapper.insertSelective(notification);
@@ -118,6 +121,7 @@ public class CommentServiceImpl implements CommentService {
     public void setNotificationMapper(NotificationMapper notificationMapper) {
         this.notificationMapper = notificationMapper;
     }
+
     @Autowired
     public void setQuestionMapper(QuestionMapper questionMapper) {
         this.questionMapper = questionMapper;

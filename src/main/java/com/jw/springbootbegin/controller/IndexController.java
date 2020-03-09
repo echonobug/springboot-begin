@@ -2,6 +2,7 @@ package com.jw.springbootbegin.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.jw.springbootbegin.dto.QuestionAndUserDTO;
+import com.jw.springbootbegin.model.Question;
 import com.jw.springbootbegin.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -19,10 +21,11 @@ public class IndexController {
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
-
+        List<Question> popularQuestions = questionService.findPopularQuestion(10);
         PageInfo<QuestionAndUserDTO> pageInfo = questionService.getAll(page, pageSize);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("pageAction", "/?page=");
+        model.addAttribute("popularQuestions", popularQuestions);
         return "index";
     }
 
