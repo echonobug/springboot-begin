@@ -39,9 +39,11 @@ public class IndexController {
         } else {
             keyword = (String) request.getSession().getAttribute("indexSearchKeyword");
         }
+        List<Question> popularQuestions = questionService.findPopularQuestion(10);
         PageInfo<QuestionAndUserDTO> pageInfo = questionService.findAll(keyword, page, pageSize);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("pageAction", "/search?page=");
+        model.addAttribute("popularQuestions", popularQuestions);
         return "index";
     }
 
