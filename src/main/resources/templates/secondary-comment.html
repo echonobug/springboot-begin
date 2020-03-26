@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="p-2">
+    <div class="p-2" th:if="${session.user} ne null">
         <input type="hidden" th:id="'reply-pre-'+${id}" value="">
         <input type="text" class="form-control" th:id="'input-'+${id}" placeholder="评论一下...">
         <div class="div-btn-reply" th:id="'div-btn-'+${id}">

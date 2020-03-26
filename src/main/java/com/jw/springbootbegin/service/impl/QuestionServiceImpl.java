@@ -39,7 +39,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public PageInfo<QuestionAndUserDTO> findAll(String keyword, Integer page, Integer pageSize) {
         QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria().andTitleLike(keyword);
+        questionExample.createCriteria().andTitleLike("%"+keyword+"%");
         PageHelper.startPage(page, pageSize);
         List<Question> questions = questionMapper.selectByExample(questionExample);
         return getQuestionAndUserDTOPageInfo(questions);

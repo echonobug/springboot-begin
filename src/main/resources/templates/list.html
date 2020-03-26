@@ -60,7 +60,7 @@
                             <span th:text="${item.comment.likeCount}"></span>
                         </button>
                     </li>
-                    <li th:if="${session.user}  ne null" class="list-inline-item ml-0">
+                    <li class="list-inline-item ml-0">
                         <button type="button" class="btn btn-light btn-icon"
                                 th:onclick="'getReply(this,'+${item.comment.id}+')'">
                             <img src="/svg/chat.svg" class="icon-sm" alt="">
